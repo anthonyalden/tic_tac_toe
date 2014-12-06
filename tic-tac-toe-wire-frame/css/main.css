@@ -1,0 +1,42 @@
+
+body{
+	width: 200px;
+	margin:0 auto;
+}
+
+#active-board {
+	text-align: center;
+	margin-top: 10px;
+}
+
+#active-board button {
+	margin-top: 10px;
+}
+
+.board-tile {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	border: 2px solid;
+	margin: 0 5px;
+}
+
+.board-tile.selected-tile {
+	background-color: green;
+}
+
+.board-tile.selected-x {
+	background-color: blue;
+}
+
+.board-tile.unselected-tile {
+	background-color: red;
+}
+
+.board-tile.red-tile {
+	background-color: red;
+}
+
+.row{
+	display: inline-block;
+}
