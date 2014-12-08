@@ -13,22 +13,46 @@ angular
 			this.toggleTile = toggleTile;
 			this.getTileState = getTileState;
 			numSquaresUsed=0;
+			gameWon=false;
 
 			function toggleTile(num, player1Name, player2Name ) {
+
+
+
 				if (numSquaresUsed ===9){
-					return
+					return;
+				}
+				if(this.tiles[num] !=0 ) {
+					alert("This Box Is Occupied.  Choose Another Box.");
+					return;
 				}
 				if (playerNumber % 2 === 0) {
 					this.tiles[num]=TILE_STATES[2];
+
+					var c=document.getElementsByClassName("board-tile");
+					
+					cxt=c[num].getContext("2d");
+					alert(num);
+					cxt.beginPath();
+					cxt.moveTo(10,10);
+					cxt.lineTo(40,40);
+					cxt.moveTo(40,10);
+					cxt.lineTo(10,40);
+					cxt.stroke();
+					
 					if (checkForWinner(this.tiles[num], this.tiles)){
 						delcareWinner(player1Name);
+						gameWon=true;
 					}
+					
 				}
 				if (playerNumber % 2 != 0) {
 					this.tiles[num]=TILE_STATES[1];
-					if (checkForWinner(this.tiles[num])){
+					if (checkForWinner(this.tiles[num], this.tiles)){
 						delcareWinner(player2Name);
+						gameWon=true;
 					}
+
 				}
 				
 				playerNumber++;
@@ -41,8 +65,6 @@ angular
 			}
 
 			function checkForWinner(id,tiles) {
-				alert("at check for winner"+tiles);
-				alert(tiles[0] +"tiles[0]     " +id);
 				if ( (tiles[0] === id && tiles[3] === id && tiles[6] === id) ||
 					 (tiles[1] === id && tiles[4] === id && tiles[7] === id) ||
 					 (tiles[2] === id && tiles[5] === id && tiles[8] === id) || 
@@ -68,7 +90,7 @@ angular
 			for (var i=0; i<this.tiles.length; i++) {
 				this.tiles[i] = 0;
 			}
-			console.log(this.tiles)
+			
 		}
 
 	
