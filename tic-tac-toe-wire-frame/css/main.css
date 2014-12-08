@@ -1,10 +1,29 @@
 
 body{
-	width: 200px;
-	margin:0 auto;
+	
+}
+
+h1{
+position: relative;
+	-webkit-animation: h1Animation 5s;
+
+}
+header{
+	text-align: center;
+
+}
+
+footer{
+	text-align: center;
+}
+
+.games-won{
+	margin: 5px;
 }
 
 #active-board {
+	width: 200px;
+	margin: 0 auto;
 	text-align: center;
 	margin-top: 10px;
 }
@@ -21,16 +40,16 @@ body{
 	margin: 0 5px;
 }
 
-.board-tile.selected-tile {
+.board-tile.s-o {
 	background-color: green;
 }
 
-.board-tile.selected-x {
+.board-tile.s-x {
 	background-color: blue;
 }
 
 .board-tile.unselected-tile {
-	background-color: red;
+	background-color: white;
 }
 
 .board-tile.red-tile {

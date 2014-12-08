@@ -7,33 +7,50 @@
 	<script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript" "utils/utils.js"></script>
 	<script src="js/GameBoard.js"></script>
+	<script src="js/Player.js"></script>
 	<script src="js/ticTacToeController.js"></script>
+
 
 
 	
 
 </head>
 <body ng-controller="TicTacToeController as game">
+			<header>
+				<h1>Tic - Tac - Toe</h1>
+			
 
-	<h1></h1><h2></h2><h3>Tic - Tac - Toe!</h3>
-		
-
-			<h1>{{ game.activeBoard.tiles }} </h1>
+				<!-- <h1>{{ game.activeBoard.tiles }} </h1> -->
+			</header>
 			<section id="active-board">
 			<div class="game-board">
 				<div class="board-tile"
 				     ng-repeat="tile in game.activeBoard.tiles track by $index"
-				     ng-click="game.activeBoard.toggleTile($index)"
+				     ng-click="game.activeBoard.toggleTile($index, game.currentPlayer1.name, game.currentPlayer2.name)"
 				     ng-class="game.activeBoard.getTileState($index)">
-				     {{ $index }}
+				     {{ $index }} {{game.currentPlayer1.name}} {{game.currentPlayer2.name}}
 				     <div>
 				     	
 				     </div>
 				</div>
 			</div>
-			<button>Submit Guess</button>
+			<button>New Game</button>
 		</section>
+		<br>
+		<footer>
+			<label>Player X
+			<input type="text" ng-model="game.currentPlayer1.name"  placeholder="Name"/>
 
+			<!-- <button class="btn btn-add" ng-click="game.currentPlayer1.setName(game.currentPlayer1.name)">+</button> --><span class="games-won">Games Won:</span>
+			</label>
+			<br>
+			<br>
+			<label>Player O
+			<input type="text" ng-model="game.currentPlayer2.name"placeholder="Name");/>
+
+			<!-- <button class="btn btn-add" ng-click="game.currentPlayer2.setName(game.currentPlayer2.name)">+</button> --><span class="games-won">Games Won:</span>
+			</label>
+		<footer>
 
 
 </body>
