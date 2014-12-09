@@ -15,12 +15,7 @@ function TicTacToeControllerFunc(GameBoard, Player) {
 	
 	this.currentPlayer1 = new Player("X");
 	this.currentPlayer2 = new Player("O");
-	// this.currentPlayer1.setName();
-	// this.currentPlayer2.setName();
 	
-	
-
-	// this.currentPlayer2 = new Player("O");
 
 }
 

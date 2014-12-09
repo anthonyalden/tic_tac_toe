@@ -18,20 +18,20 @@
 <body ng-controller="TicTacToeController as game">
 			<header>
 				<h1>Tic - Tac - Toe</h1>
-			
+				<h2>Game Winner: {{game.activeBoard.gameWinner}}</h2>
 
 				<!-- <h1>{{ game.activeBoard.tiles }} </h1> -->
 			</header>
 			<section id="active-board">
 			<div class="game-board">
-				<canvas class="board-tile"
+				<div class="board-tile"
 				     ng-repeat="tile in game.activeBoard.tiles track by $index"
 				     ng-click="game.activeBoard.toggleTile($index, game.currentPlayer1.name, game.currentPlayer2.name)"
-				     ng-class="game.activeBoard.getTileState($index)">
-				     {{ $index }} {{game.currentPlayer1.name}} {{game.currentPlayer2.name}}
-				     </canvas>
-				     	
-				     </div>
+				     ng-class="game.activeBoard.getTileState($index)"/>
+				      {{tile}}
+				    
+				     	<!-- {{ $index }} {{game.currentPlayer1.name}} {{game.currentPlayer2.name}} -->
+				     
 				</div>
 			</div>
 			<button>New Game</button>
