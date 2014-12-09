@@ -16,13 +16,17 @@ angular
 			this.tiles = new Array( numTiles );
 			this.toggleTile = toggleTile;
 			this.getTileState = getTileState;
-			
+			this.restGame = restGame;
+			this.newPlayers = newPlayers;
 
-			function toggleTile(num, player1Name, player2Name ) {
+			function toggleTile(num, player1, player2) {
 
 
 
-				
+				if (player2.name ==="" || player2.name===""){
+					alert("You must enter Player names!!");
+					return;
+				}
 				if(gameWon || numSquaresUsed===9){
 					return;
 				}
@@ -38,7 +42,8 @@ angular
 					numSquaresUsed++;
 					
 					if (checkForWinner(this.tiles[num], this.tiles)){
-						this.gameWinner=player1Name;
+						this.gameWinner=player1.name;
+						player1.score++;
 						gameWon=true;
 					}
 					if (numSquaresUsed ===9){
@@ -50,7 +55,8 @@ angular
 					this.tiles[num]=TILE_STATES[1];
 					numSquaresUsed++;
 					if (checkForWinner(this.tiles[num], this.tiles)){
-						this.gameWinner=player2Name;
+						this.gameWinner=player2.name;
+						player2.score++;
 						gameWon=true;
 					}
 					if (numSquaresUsed ===9){
@@ -63,6 +69,25 @@ angular
 				playerNumber++;
 				
 				// this.tiles[num] = (this.tiles[num] + 1) % TILE_STATES.length;
+			}
+
+			function restGame (){
+				
+				numSquaresUsed = 0;
+				gameWon = false;
+				this.gameWinner = "";
+				playerNumber = 0;
+
+				for (var i=0; i<this.tiles.length; i++) {
+				this.tiles[i] = "";
+				}
+			}
+
+			function newPlayers(player1,player2){
+				player1.name="";
+				player1.score=0;
+				player2.name ="";
+				player2.score = 0;
 			}
 
 			function getTileState( num ) {

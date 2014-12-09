@@ -7,7 +7,7 @@ angular
 		var Player = function (PlayerId){
 			this.name="";
 			this.player=PlayerId;
-			score=0;
+			this.score=0;
 			this.setName=setName;
 			this.getName=getName;
 
