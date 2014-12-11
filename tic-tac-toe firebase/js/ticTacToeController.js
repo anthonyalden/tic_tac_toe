@@ -3,8 +3,7 @@ angular
 	.controller("TicTacToeController", TicTacToeControllerFunc);
 
 	TicTacToeControllerFunc.$inject = ['GameBoard', 'Player', '$firebase'];
-
-	
+	// TicTacToeControllerFunc.$inject = ['Player'];
 
 
 

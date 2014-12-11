@@ -28,10 +28,10 @@
 			<section id="active-board">
 			<div class="game-board">
 				<div class="board-tile"
-				     ng-repeat="tile in game.activeBoard.tiles track by $index"
-				     ng-click="game.activeBoard.playSquare($index, game.currentPlayer1, game.currentPlayer2)"
+				     ng-repeat="tile in game.activeBoard.tilesObject.squareArray track by $index"
+				     ng-click="game.activeBoard.toggleTile($index, game.currentPlayer1, game.currentPlayer2)"
 				     ng-class="game.activeBoard.getTileState($index)"/>
-				      <!-- {{tile}} -->
+				      {{tile}}
 				    
 				     	<!-- {{ $index }} {{game.currentPlayer1.name}} {{game.currentPlayer2.name}} -->
 				     

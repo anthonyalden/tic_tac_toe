@@ -2,13 +2,12 @@ angular
 	.module("ticTacToeApp")
 	.controller("TicTacToeController", TicTacToeControllerFunc);
 
-	TicTacToeControllerFunc.$inject = ['GameBoard', 'Player', '$firebase'];
-
-	
-
+	TicTacToeControllerFunc.$inject = ['GameBoard', 'Player'];
+	// TicTacToeControllerFunc.$inject = ['Player'];
 
 
-function TicTacToeControllerFunc(GameBoard, Player, $firebase) {
+
+function TicTacToeControllerFunc(GameBoard, Player) {
 	this.gameName = "TicTacToe";
 
 	

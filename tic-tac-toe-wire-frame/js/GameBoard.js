@@ -2,67 +2,107 @@ angular
 	.module('ticTacToeApp')
 	.factory('GameBoard',GameBoardFunc);
 
-	function GameBoardFunc() {
+	GameBoardFunc.$inject=['$firebase'];
 
-		var TILE_STATES = ['unselected-tile', 'O','X'];
+	function GameBoardFunc($firebase) {
+
+		var SQUARE_STATES = ['unselected-tile', 'O','X'];
 		var playerNumber = 0;
+		// var gb=this;
+		// gb.$firebase=$firebase;
+
 
 		var GameBoard = function( numTiles ) {
 			var numSquaresUsed=0;
 			var gameWon=false;
-			this.gameWinner="";
+			self =  this;
+			self.gameWinner="";
+			self.tilesObject=getSquaresObject();
 
-			this.numTiles = numTiles;
-			this.tiles = new Array( numTiles );
-			this.toggleTile = toggleTile;
-			this.getTileState = getTileState;
-			this.restGame = restGame;
-			this.newPlayers = newPlayers;
+			// for(var i = 0; i < numTiles; i++){
+			// 		// self.tiles.$add(0);
+			// 		self.tiles[i]=0;
+			// 	}
+				// self.tilesObject.$save();
+				// self.keys=self.tiles.$getIndex();
+				// console.log("keys "+self.keys);		
+			
+			self.numTiles = numTiles;
+			// self.tiles = new Array( numTiles );
+			self.playSquare = playSquare;
+			self.getTileState = getTileState;
+			self.resetGame = resetGame;
+			self.newPlayers = newPlayers;
+			self.keys =[];
 
-			function toggleTile(num, player1, player2) {
 
 
 
-				if (player2.name ==="" || player2.name===""){
-					alert("You must enter Player names!!");
-					return;
-				}
-				if(gameWon || numSquaresUsed===9){
-					return;
-				}
-
+			function getSquaresObject(){
+				var tilesArray=[];
+				var ref = new Firebase("https://presidents.firebaseio.com/squares");
 				
-				if(this.tiles[num] !=0 ) {
-					alert("This Box Is Occupied.  Choose Another Box.");
-					return;
+				var squares = $firebase(ref).$asObject();
+				for(var i = 0; i <9; i++){
+					// self.tiles.$add(0);
+					tilesArray[i]=0;
 				}
-				if (playerNumber % 2 === 0) {
-					this.tiles[num]=TILE_STATES[2];
+				console.log("before save of init squarearray");
+				squares.squareArray=tilesArray;
 
-					numSquaresUsed++;
+				squares.$save();
+				return squares;
+			}
+
+
+
+			function playSquare(num, player1, player2) {
+
+
+				// if (player2.name ==="" || player2.name===""){
+				// 	alert("You must enter Player names!!");
+				// 	return;
+				// }
+				// if(gameWon || numSquaresUsed===9){
+				// 	return;
+				// }
+
+				// if(self.tiles[num] !=0 ) {
+				// 	alert("This Box Is Occupied.  Choose Another Box.");
+				// 	return;
+				// }
+				if (playerNumber % 2 === 0) {
+					self.tilesObject.squareArray[num]=SQUARE_STATES[2];
+					console.log("self tiles"+self.tiles.tilesArray);
+					self.tilesObject.$save();
+					// numSquaresUsed++;
 					
-					if (checkForWinner(this.tiles[num], this.tiles)){
-						this.gameWinner=player1.name;
-						player1.score++;
-						gameWon=true;
-					}
-					if (numSquaresUsed ===9){
-					this.gameWinner="CATS GAME";
-					return false;
-					}
+					// if (checkForWinner(self.tiles[num], self.tiles)){
+					// 	self.gameWinner=player1.name;
+					// 	// declareWinner(player1.name);
+					// 	player1.score++;
+					// 	gameWon=true;
+					// }
+					// if (numSquaresUsed ===9){
+					// this.gameWinner="CATS GAME";
+					// return false;
+					// }
 				}
 				if (playerNumber % 2 != 0) {
-					this.tiles[num]=TILE_STATES[1];
-					numSquaresUsed++;
-					if (checkForWinner(this.tiles[num], this.tiles)){
-						this.gameWinner=player2.name;
-						player2.score++;
-						gameWon=true;
-					}
-					if (numSquaresUsed ===9){
-					this.gameWinner="CATS GAME";
-					return false;
-					}
+					self.tilesObject.squareArray[num]=SQUARE_STATES[1];
+					self.tilesObject.$save();
+					// self.tiles.$save(self.tiles);
+					// numSquaresUsed++;
+					// if (checkForWinner(self.tiles[num], self.tiles)){
+					// 	self.gameWinner=player2.name;
+					// 	// declareWinner(player2.name);
+					// 	player2.score++;
+					// 	gameWon=true;
+					// }
+					// if (numSquaresUsed ===9){
+					// self.gameWinner="CATS GAME";
+					// return false;
+					// }
 
 				}
 				
@@ -71,15 +111,16 @@ angular
 				// this.tiles[num] = (this.tiles[num] + 1) % TILE_STATES.length;
 			}
 
-			function restGame (){
+			function resetGame (){
 				
 				numSquaresUsed = 0;
 				gameWon = false;
-				this.gameWinner = "";
+				self.gameWinner = "";
 				playerNumber = 0;
 
-				for (var i=0; i<this.tiles.length; i++) {
-				this.tiles[i] = "";
+				for (var i=0; i<self.tiles.length; i++) {
+					console.log("reset ");
+				self.tiles[i] = "";
 				}
 			}
 
@@ -88,10 +129,13 @@ angular
 				player1.score=0;
 				player2.name ="";
 				player2.score = 0;
+				resetGame();
 			}
 
 			function getTileState( num ) {
-				return this.tiles[num];
+				// return this.tiles[num];
+				console.log("gettileState "+ self.tilesObject.squareArray[num]);
+				return self.tilesObject.squareArray[num];
 			}
 
 			function checkForWinner(id,tiles) {
@@ -114,15 +158,15 @@ angular
 			}
 
 			function delcareWinner(playerName){
-				this.gameWinner=playerName;
-				console.log("in declarewinner "+this.gameWinner);
+				self.gameWinner=playerName;
+				console.log("in declarewinner "+self.gameWinner);
 				
 				
 			}
 			
-			for (var i=0; i<this.tiles.length; i++) {
-				this.tiles[i] = "";
-			}
+			
+				// self.tiles[i] = "";
+		
 			
 		}
 
