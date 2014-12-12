@@ -9,7 +9,7 @@ angular
 		var TILE_STATES = ['unselected-tile', 'O','X'];
 		var playerNumber = 0;
 
-		var GameBoard = function( numTiles , passedInObject) {
+		var GameBoard = function( numTiles , passedInObject, playerId) {
 			
 			// used to determine cats game
 			var numSquaresUsed=0;
@@ -67,12 +67,17 @@ angular
 			// player2 is the player2 object instantiated in the Controller
 			function toggleTile(num, player1, player2) {
 
-
+				console.log ("Playerid "+playerId);
 				// players must enter names to play
 				// if (player2.name ==="" || player2.name===""){
 				// 	alert("You must enter Player names!!");
 				// 	return;
 				// }
+
+				
+
+
+
 
 				// check to see if the game is over or a cats game and tell the user the game is over
 				// if he keeps clicking on the board
@@ -81,7 +86,22 @@ angular
 					return;
 				}
 
+
 				// check to see if box is already chosen and tell user if so
+				
+
+				console.log("before checks to its your turn");
+				if ( (self.tilesObject.playerNumber%2 === 0) && ( playerId%2  === 0) ){
+					// alert("Please wait for your turn");
+					return;
+				}
+
+				if ( (self.tilesObject.playerNumber != 0) && ( playerId%2 != 0)){
+					// alert("Please wait for your turn");
+					return;
+				}
+
+
 				if(self.tilesObject.squareArray[num] !="" ) {
 					alert("This Box Is Occupied.  Choose Another Box.");
 					return;
@@ -90,11 +110,13 @@ angular
 				// logic for player number 1 that is 'X'
 				if (self.tilesObject.playerNumber % 2 === 0) {
 					// update array with X and save to database 
+
 					self.tilesObject.squareArray[num]=TILE_STATES[2];
 					self.tilesObject.$save();
 
 					numSquaresUsed++;
 					
+
 
 					// check to see if this move is a winning move
 					if (checkForWinner(self.tilesObject.squareArray[num], self.tilesObject.squareArray)){
@@ -112,7 +134,7 @@ angular
 					}
 				}
 
-
+				
 				// Logic for player number 2 that is 'O'
 				if (self.tilesObject.playerNumber % 2 != 0) {
 
@@ -143,12 +165,16 @@ angular
 				
 				// flip flop player X and O
 				if (self.tilesObject.playerNumber === 0){
+					
 					self.tilesObject.playerNumber =1;
 					self.tilesObject.$save();
+					
 				}
 				else {
-					self.tilesObject.playerNumber = 0;
+					
+					self.tilesObject.playerNumber =0;
 					self.tilesObject.$save();
+				
 				}
 				
 				
