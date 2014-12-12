@@ -5,8 +5,10 @@ angular
 	function PlayerFunc(){
 
 		var Player = function (PlayerId){
+			
 			this.name="";
 			this.player=PlayerId;
+			this.playerNum=0;
 			this.score=0;
 			this.setName=setName;
 			this.getName=getName;
