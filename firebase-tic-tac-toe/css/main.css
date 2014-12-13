@@ -17,6 +17,10 @@ footer{
 	text-align: center;
 }
 
+#wait-turn{
+	color:red;
+}
+
 #game-winner{
 	display: inline;
 }

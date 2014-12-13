@@ -115,7 +115,8 @@ angular
 					// alert("Please wait for your turn");
 					return;
 				}
-
+				self.tilesObject.currentPlayer = playerId;
+				self.tilesObject.$save();
 
 				if(self.tilesObject.squareArray[num] !="" ) {
 					alert("This Box Is Occupied.  Choose Another Box.");

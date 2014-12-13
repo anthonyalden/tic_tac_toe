@@ -21,11 +21,12 @@
 <body ng-controller="TicTacToeController as game">
 			<header>
 				<h1>Tic - Tac - Toe</h1>
+				<span id="wait-turn"ng-show ="game.activeBoard.notYourTurn && (game.activeBoard.tilesObject.playerNumber === game.activeBoard.PlayerId%2)">Please Wait For Your Turn</span> <br>
 				<h2 id="game-winner">Game Winner: {{game.activeBoard.tilesObject.gameWinner}}</h2>
 
 				
 					<span id="winner" ng-show ="game.activeBoard.tilesObject.gameWon">Game is Over</span>
-					<span ng-show ="game.activeBoard.notYourTurn && (game.activeBoard.tilesObject.playerNumber === game.activeBoard.PlayerId)">Please Wait For Your Turn</span> 
+					
 
 				<!-- <h1>{{ game.activeBoard.tiles }} </h1> -->
 			</header>

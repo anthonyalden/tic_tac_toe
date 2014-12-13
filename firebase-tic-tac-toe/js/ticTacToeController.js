@@ -17,14 +17,41 @@ function TicTacToeControllerFunc(GameBoard, Player, $firebase) {
 	var squares = $firebase(ref).$asObject();
 	var playerId;
 	squares.$loaded(function () {
-			playerId = squares.numPlayers;
-			if ( playerId < 1){
-			squares.numPlayers = squares.numPlayers +1;
-			}
-			else
-			{
-				squares.numPlayers = 0;
-			}
+
+			playerId=squares.numPlayers;
+			// if (squares.currentPlayer%2 === 0) {
+			// 	if (squares.numPlayers%2 ===0){
+			// 		squares.numPlayers = squares.numPlayers+1
+			// 		squares.$save();
+			// 		playerId = squares.numPlayers;
+			// 	}
+			// 	else{
+			// 		playerId = squares.numPlaers;
+			// 	}
+
+			// }
+
+			// if(squares.currentPlayer%2 != 0 ){
+			// 	if (squares.numPlayers%2 != 0){
+			// 		squares.numPlayers=squares.numPlayers+1;
+			// 		squares.$save;
+			// 		playerId = squares.numPlayers;
+			// 	}
+			// 	else{
+			// 		playerId=squares.numPlayers;
+			// 	}
+			// }
+			// playerId = squares.numPlayers;
+
+
+			// if ( playerId < 1){
+			// squares.numPlayers = squares.numPlayers +1;
+			// }
+			// else
+			// {
+			// 	squares.numPlayers = 0;
+			// }
+			squares.numPlayers=squares.numPlayers+1;
 			squares.$save();
 			self.activeBoard = new GameBoard(9, squares, playerId);
 
