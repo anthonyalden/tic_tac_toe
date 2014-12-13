@@ -17,14 +17,6 @@ footer{
 	text-align: center;
 }
 
-#game-winner{
-	display: inline;
-}
-
-#winner {
-	color: red;
-	font-size: 15pt;
-}
 .games-won{
 	margin: 5px;
 }

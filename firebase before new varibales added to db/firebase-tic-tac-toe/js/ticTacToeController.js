@@ -18,13 +18,7 @@ function TicTacToeControllerFunc(GameBoard, Player, $firebase) {
 	var playerId;
 	squares.$loaded(function () {
 			playerId = squares.numPlayers;
-			if ( playerId < 1){
 			squares.numPlayers = squares.numPlayers +1;
-			}
-			else
-			{
-				squares.numPlayers = 0;
-			}
 			squares.$save();
 			self.activeBoard = new GameBoard(9, squares, playerId);
 

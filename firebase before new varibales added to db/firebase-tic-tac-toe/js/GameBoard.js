@@ -40,10 +40,6 @@ angular
 			// function used to reset scores and data associated with new players
 			this.newPlayers = newPlayers;
 
-			self.notYourTurn = false;
-			
-			self.PlayerId = playerId;
-
 			
 			// function interfaces with firebase and defines array object stored in firebase database 
 			// it return 'squares' which is an array that is the main datastructure that holds the
@@ -66,25 +62,18 @@ angular
 				return squares;
 			}
 
-			// num is the square number that iscurrently being played
+			// num is the square number that is currently being played
 			// player1 is the player1 object instantiated in the Controller
 			// player2 is the player2 object instantiated in the Controller
 			function toggleTile(num, player1, player2) {
 
 				console.log ("Playerid "+playerId);
 				// players must enter names to play
-				// if (player1.name ==="" || player2.name===""){
+				// if (player2.name ==="" || player2.name===""){
 				// 	alert("You must enter Player names!!");
 				// 	return;
 				// }
-				if (playerId===0){
-					self.tilesObject.playerName1="O  "+player1.name;
-					self.tilesObject.$save();
-				}
-				else{
-					self.tilesObject.playerName2="X  "+player1.name;
-					self.tilesObject.$save;
-				}
+
 				
 
 
@@ -92,26 +81,22 @@ angular
 
 				// check to see if the game is over or a cats game and tell the user the game is over
 				// if he keeps clicking on the board
-				// if(self.tilesObject.gameWon || self.tilesObject.numSquaresUsed===9){
-				// 	alert("This game is over.  Press New Game to start over.")
-				// 	return;
-				// }
+				if(gameWon || numSquaresUsed===9){
+					alert("This game is over.  Press New Game to start over.")
+					return;
+				}
 
 
 				// check to see if box is already chosen and tell user if so
+				
+
+				console.log("before checks to its your turn");
 				if ( (self.tilesObject.playerNumber%2 === 0) && ( playerId%2  === 0) ){
-					
-					self.notYourTurn= true;
-					// self.tilesObject.NotYourturn= true;
-					// self.tilesObject.$save();
 					// alert("Please wait for your turn");
 					return;
 				}
-			
+
 				if ( (self.tilesObject.playerNumber != 0) && ( playerId%2 != 0)){
-					// self.tilesObject.notYourTurn=true;
-					self.notYourTurn =true;
-					// self.tilesObject.$save();
 					// alert("Please wait for your turn");
 					return;
 				}
@@ -127,29 +112,24 @@ angular
 					// update array with X and save to database 
 
 					self.tilesObject.squareArray[num]=TILE_STATES[2];
-					self.tilesObject.numSquaresUsed=self.tilesObject.numSquaresUsed+1;
-					// self.notYourTurn=false;
 					self.tilesObject.$save();
 
-					
+					numSquaresUsed++;
 					
 
 
 					// check to see if this move is a winning move
 					if (checkForWinner(self.tilesObject.squareArray[num], self.tilesObject.squareArray)){
-						self.tilesObject.gameWinner=self.tilesObject.playerName1;
-						self.tilesObject.playerScore1 = self.tilesObject.playerScore1+1;
+						this.gameWinner=player1.name;
+						player1.score++;
 				
-						// gameWon=true;
-						self.tilesObject.gameWon=true;
-						self.tilesObject.$save();
-						return;
+						gameWon=true;
+						return true;
 					}
 
 					// check to see if this move is a cats game
-					if (self.tilesObject.numSquaresUsed ===9 && self.tilesObject.gameWon === false) {
-					self.tilesObject.gameWinner="CATS GAME";
-					self.tilesObject.$save();
+					if (numSquaresUsed ===9){
+					this.gameWinner="CATS GAME";
 					return false;
 					}
 				}
@@ -160,29 +140,24 @@ angular
 
 					// update array with O and save to database
 					self.tilesObject.squareArray[num]=TILE_STATES[1];
-					self.tilesObject.numSquaresUsed=self.tilesObject.numSquaresUsed+1;
-					// self.notYourTurn=false;
 					self.tilesObject.$save();
 					
-					
+					numSquaresUsed++;
 
 					// check to see if this is winning move
 					if (checkForWinner(self.tilesObject.squareArray[num], self.tilesObject.squareArray)){
-						self.tilesObject.gameWinner=self.tilesObject.playerName2;
-						self.tilesObject.playerScore2 = self.tilesObject.playerScore2+1;
+						this.gameWinner=player2.name;
+						player2.score++;
 						// player2.updateScore();
 						gameWon=true;
-						self.tilesObject.gameWon=true;
-						self.tilesObject.$save();
-						return;
+						return true;
 					}
 
 					// check to see if this is a cats game
 					// set gameWinner to CATS GAME so it 
 					// prints this out as the message who wins
-					if (self.tilesObject.numSquaresUsed ===9 && self.tilesObject.gameWon===false){
-					self.tilesObject.gameWinner="CATS GAME";
-					self.tilesObject.$save();
+					if (numSquaresUsed ===9 && gameWon===false){
+					this.gameWinner="CATS GAME";
 					return false;
 					}
 
@@ -190,13 +165,13 @@ angular
 				
 				// flip flop player X and O
 				if (self.tilesObject.playerNumber === 0){
-					self.notYourTurn=false;
+					
 					self.tilesObject.playerNumber =1;
 					self.tilesObject.$save();
 					
 				}
 				else {
-					self.notYourTurn=false;
+					
 					self.tilesObject.playerNumber =0;
 					self.tilesObject.$save();
 				
@@ -209,10 +184,10 @@ angular
 			// reset variables assocated with a game
 			function resetGame (){
 				
-				self.tilesObject.numSquaresUsed = 0;
-				self.tilesObject.gameWon = false;
-				self.tilesObject.gameWinner = "";
-				// self.tilesObject.playerNumber = 0;
+				numSquaresUsed = 0;
+				gameWon = false;
+				this.gameWinner = "";
+				playerNumber = 0;
 
 				for (var i=0; i<self.tilesObject.squareArray.length; i++) {
 				self.tilesObject.squareArray[i] = "";
