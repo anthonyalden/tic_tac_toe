@@ -9,6 +9,7 @@ angular
 		var TILE_STATES = ['unselected-tile', 'O','X'];
 		var playerNumber = 0;
 
+
 		var GameBoard = function( numTiles , passedInObject, playerId) {
 			
 			// used to determine cats game
@@ -17,12 +18,16 @@ angular
 			// used to determine when the game has been won
 			var gameWon=false;
 
+			// used to determine that player has exited game and display message if they try to continue 
+			// playing after exiting the game
+			var exitGame=false;
+
 
 			self = this;
 
 			// variable to display who wins the game in html
 			self.gameWinner="";
-			
+		
 			
 			//firebase object used to store array that holds X's and O's
 			// self.tilesObject=getSquaresObject();
@@ -36,12 +41,16 @@ angular
 			
 			// function resets game when over to set up for a new game
 			this.resetGame = resetGame;
+			this.quitGame = quitGame;
 			
 			// function used to reset scores and data associated with new players
 			this.newPlayers = newPlayers;
 
+			// used to display message that it is not players turn if they try to click on box when it 
+			// is not their turn
 			self.notYourTurn = false;
 			
+			// used to ID player as either X or O set to 1 or O
 			self.PlayerId = playerId;
 
 			
@@ -71,108 +80,84 @@ angular
 			// player2 is the player2 object instantiated in the Controller
 			function toggleTile(num, player1, player2) {
 
-				console.log ("Playerid "+playerId);
-				// players must enter names to play
-				// if (player1.name ==="" || player2.name===""){
-				// 	alert("You must enter Player names!!");
-				// 	return;
-				// }
-				if (playerId===0){
-					self.tilesObject.playerName1="O  "+player1.name;
-					self.tilesObject.$save();
-				}
-				else{
-					self.tilesObject.playerName2="X  "+player1.name;
-					self.tilesObject.$save;
-				}
-				
-
-
-
-
 				// check to see if the game is over or a cats game and tell the user the game is over
 				// if he keeps clicking on the board
-				// if(self.tilesObject.gameWon || self.tilesObject.numSquaresUsed===9){
-				// 	alert("This game is over.  Press New Game to start over.")
-				// 	return;
-				// }
+				if(self.tilesObject.gameWon || self.tilesObject.numSquaresUsed===9){
+					alert("This game is over.  Press New Game to start over.");
+					return;
+				}
 
-
+				// if player has exited the game don't let him continue playing, have 
+				// him refresh his browser.
+				if (exitGame){
+					alert("You have exited this game.  Please refresh your browser to play again.");
+					return;
+				}
 				// check to see if box is already chosen and tell user if so
 				if ( (self.tilesObject.playerNumber%2 === 0) && ( playerId%2  === 0) ){
-					
 					self.notYourTurn= true;
-					// self.tilesObject.NotYourturn= true;
-					// self.tilesObject.$save();
-					// alert("Please wait for your turn");
 					return;
 				}
-			
-				if ( (self.tilesObject.playerNumber != 0) && ( playerId%2 != 0)){
-					// self.tilesObject.notYourTurn=true;
-					self.notYourTurn =true;
-					// self.tilesObject.$save();
-					// alert("Please wait for your turn");
-					return;
-				}
-				self.tilesObject.currentPlayer = playerId;
-				self.tilesObject.$save();
 
-				if(self.tilesObject.squareArray[num] !="" ) {
+				if ( (self.tilesObject.playerNumber !== 0) && ( playerId%2 !==0)){
+					self.notYourTurn =true;
+					return;
+				}
+
+
+				// tell user that box is occupied if he clicks on one that already has X or O
+				if(self.tilesObject.squareArray[num] !== "" ) {
 					alert("This Box Is Occupied.  Choose Another Box.");
 					return;
 				}
 
-				// logic for player number 1 that is 'X'
-				if (self.tilesObject.playerNumber % 2 === 0) {
-					// update array with X and save to database 
+				// reset who goes first flag X or O so that NG-SHOW turns off the message
+				self.tilesObject.goesFirst = false;
 
+
+				// playserNumber is used to toggle between X and O 
+				// this conditional statement selects 'X'
+				if (self.tilesObject.playerNumber === 1) {
+					// update array with X and save to database 
+				alert("in main first X if "+ self.tilesObject.playerNumber);
 					self.tilesObject.squareArray[num]=TILE_STATES[2];
 					self.tilesObject.numSquaresUsed=self.tilesObject.numSquaresUsed+1;
 					// self.notYourTurn=false;
 					self.tilesObject.$save();
 
 					
-					
-
-
 					// check to see if this move is a winning move
 					if (checkForWinner(self.tilesObject.squareArray[num], self.tilesObject.squareArray)){
 						self.tilesObject.gameWinner=self.tilesObject.playerName1;
 						self.tilesObject.playerScore1 = self.tilesObject.playerScore1+1;
-				
-						// gameWon=true;
-						self.tilesObject.gameWon=true;
+						self.tilesObject.gameWon = true;
 						self.tilesObject.$save();
 						return;
 					}
 
 					// check to see if this move is a cats game
-					if (self.tilesObject.numSquaresUsed ===9 && self.tilesObject.gameWon === false) {
+					if (self.tilesObject.numSquaresUsed === 9 && self.tilesObject.gameWon === false) {
 					self.tilesObject.gameWinner="CATS GAME";
 					self.tilesObject.$save();
 					return false;
 					}
-				}
+				} // end player 'X'
 
 				
-				// Logic for player number 2 that is 'O'
-				if (self.tilesObject.playerNumber % 2 != 0) {
-
+				
+				// playserNumber is used to toggle between X and O 
+				// this conditional statement selects 'O'
+				if (self.tilesObject.playerNumber  === 0 ) {
+					alert("in main second  O if "+ self.tilesObject.playerNumber);
 					// update array with O and save to database
 					self.tilesObject.squareArray[num]=TILE_STATES[1];
 					self.tilesObject.numSquaresUsed=self.tilesObject.numSquaresUsed+1;
-					// self.notYourTurn=false;
 					self.tilesObject.$save();
 					
-					
-
 					// check to see if this is winning move
 					if (checkForWinner(self.tilesObject.squareArray[num], self.tilesObject.squareArray)){
 						self.tilesObject.gameWinner=self.tilesObject.playerName2;
 						self.tilesObject.playerScore2 = self.tilesObject.playerScore2+1;
-						// player2.updateScore();
-						gameWon=true;
 						self.tilesObject.gameWon=true;
 						self.tilesObject.$save();
 						return;
@@ -180,66 +165,102 @@ angular
 
 					// check to see if this is a cats game
 					// set gameWinner to CATS GAME so it 
-					// prints this out as the message who wins
+					// prints this out as a message to screen
 					if (self.tilesObject.numSquaresUsed ===9 && self.tilesObject.gameWon===false){
 					self.tilesObject.gameWinner="CATS GAME";
 					self.tilesObject.$save();
 					return false;
 					}
 
-				}
+				} // end player 'O'
 				
 				// flip flop player X and O
 				if (self.tilesObject.playerNumber === 0){
 					self.notYourTurn=false;
-					self.tilesObject.playerNumber =1;
+					self.tilesObject.playerNumber = 1;
 					self.tilesObject.$save();
 					
 				}
 				else {
 					self.notYourTurn=false;
-					self.tilesObject.playerNumber =0;
+					self.tilesObject.playerNumber = 0;
 					self.tilesObject.$save();
 				
 				}
 				
 				
+			} // end toggleTile
+
+			// used to exit the game gracefully so that the database knows which player has
+			// finished playing.
+			function quitGame(){
+				if (playerId%2 === 0){
+					self.tilesObject.player1 = false;
+				}
+				else {
+					self.tilesObject.player2 = false;
+				}
+
+				self.tilesObject.$save();
+
+				alert("Thank you for playing Tic Tac Toe.  You may close your browser now.");
+				exitGame =  true;
 			}
 
 
 			// reset variables assocated with a game
 			function resetGame (){
-				
+
 				self.tilesObject.numSquaresUsed = 0;
 				self.tilesObject.gameWon = false;
 				self.tilesObject.gameWinner = "";
-				// self.tilesObject.playerNumber = 0;
-
+				self.tilesObject.playerNumber = Math.floor(Math.random(0,1)*2);
+				if (self.tilesObject.playerNumber === 1 ){
+					self.tilesObject.goesFirst=true;
+					self.tilesObject.goesFirstName = "X";
+				}
+				else{
+					self.tilesObject.goesFirst=true;
+					self.tilesObject.goesFirstName = "O";
+				}
 				for (var i=0; i<self.tilesObject.squareArray.length; i++) {
 				self.tilesObject.squareArray[i] = "";
 				
 				}
+
 				self.tilesObject.$save();
 			}
 
 
-			// reset variables assoiciated with players and then reset then game
+			// setup variables assoiciated with new players
 			function newPlayers(player1,player2){
-				// player1.name="";
-				player1.score=0;
-				// player2.name ="";
-				player2.score = 0;
-				// console.log("player number "player1.playerNum)
-				// if (!self.tilesObject.playerId){
-				// 	 self.tilesObject.playerId=1;
-				// 	 self.tilesObject.$save();
-				// }
-				// else{
-					// self.tilesObject.playerId= self.tilesObject.playerId+1;
-					// self.tilesObject.$save();
-				// }	
-				resetGame();
-			}
+
+			
+				self.tilesObject.playerScore1=0;
+				self.tilesObject.playerScore2 = 0;
+				
+				// note that player1.name is used for both players.
+				if (playerId === 0 && self.tilesObject.playerNumber === 1){
+					alert("playerId"+playerId);
+					self.tilesObject.playerName1="X - "+player1.name;
+					
+				}
+				else if ( playerId === 0 && self.tilesObject.playerNumber === 0){
+					self.tilesObject.playerName1="X - "+player1.name;
+					
+				}
+				else if (playerId === 1 && self.tilesObject.playerNumber === 1){
+					alert("playerID in else"+playerId);
+					self.tilesObject.playerName2 = "O - "+player1.name;
+					
+				}
+				else{
+					self.tilesObject.playerName2 = "O - "+player1.name;
+					
+				}
+				self.tilesObject.$save;	
+				
+			} // end newPlayers
 
 
 			// return X or O or unselected for ng-class to display in html 
@@ -266,17 +287,13 @@ angular
 					return true;
 				}
 				
-					
-			
-				
 				return false;
-			}
+			} // end check for winner
 
 			
-		}
-
-	
+		} // end gameBoard
 
 
 		return GameBoard;
-	}
+
+	} // end GameBoardFunc

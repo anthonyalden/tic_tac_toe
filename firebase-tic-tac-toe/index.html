@@ -21,47 +21,66 @@
 <body ng-controller="TicTacToeController as game">
 			<header>
 				<h1>Tic - Tac - Toe</h1>
-				<span id="wait-turn"ng-show ="game.activeBoard.notYourTurn && (game.activeBoard.tilesObject.playerNumber === game.activeBoard.PlayerId%2)">Please Wait For Your Turn</span> <br>
+				<h3>Enter You Name Below.  Last Person To Enter Name, Press New Game To Start.</h3>
+				
+				<!-- Show how goes first, X or O -->
+				<span id="go-first" ng-show ="game.activeBoard.tilesObject.goesFirst">{{game.activeBoard.tilesObject.goesFirstName}} Goes First</span> 
+				<br>
+
+				<!-- tell user to wait his turn -->
+				<span id="wait-turn" ng-show ="game.activeBoard.notYourTurn && (game.activeBoard.tilesObject.playerNumber === game.activeBoard.PlayerId%2)">Please Wait For Your Turn</span> 
+				<br>
+				
+				<!-- show that the game is over -->
+				<span id="winner" ng-show ="game.activeBoard.tilesObject.gameWon">Game is Over. Winner Please Press New Game</span>
+				<br>
+				<!-- show game winner's name -->
 				<h2 id="game-winner">Game Winner: {{game.activeBoard.tilesObject.gameWinner}}</h2>
 
 				
-					<span id="winner" ng-show ="game.activeBoard.tilesObject.gameWon">Game is Over</span>
-					
-
-				<!-- <h1>{{ game.activeBoard.tiles }} </h1> -->
 			</header>
 			<section id="active-board">
+			
+			<!-- display gameboard and handle clicking on squares, show X's and O's as clicked on -->
 			<div class="game-board">
 				<div class="board-tile"
 				     ng-repeat="tile in game.activeBoard.tilesObject.squareArray track by $index"
 				     ng-click="game.activeBoard.toggleTile($index, game.currentPlayer1, game.currentPlayer2)"
 				     ng-class="game.activeBoard.getTileState($index)"/>
 				      {{tile}}
-				    
-				     	<!-- {{ $index }} {{game.currentPlayer1.name}} {{game.currentPlayer2.name}} -->
-				     
 				</div>
 			</div>
+			
+			<!-- start a new game button -->
 			<button type="button" ng-click="game.activeBoard.resetGame()">New Game</button>
+		
 		</section>
 		<br>
+		
 		<footer>
+			<!-- player name input box -->
 			<label>Player Name
-			<input type="text" ng-model="game.currentPlayer1.name"  placeholder="Name"/>
-
-			<!-- <button class="btn btn-add" ng-click="game.currentPlayer1.setName(game.currentPlayer1.name)">+</button> -->
-			</label>
-			<br>
-			<br>
-			<label>
-			<!-- <input type="text" ng-model="game.currentPlayer2.name; "placeholder="Name" );/> -->
-						<span class="games-won">{{game.activeBoard.tilesObject.playerName1}} Has Won {{game.activeBoard.tilesObject.playerScore1}} Games</span>
-			<!-- <button class="btn btn-add" ng-click="game.currentPlayer2.setName(game.currentPlayer2.name)">+</button> --><span class="games-won">{{game.activeBoard.tilesObject.playerName2}} Has Won {{game.activeBoard.tilesObject.playerScore2}} Games</span>
-
-			</label>
-			<br>
-			<br>
+				<input type="text" ng-model="game.currentPlayer1.name"  placeholder="Name"/>
+				
+				<!-- button to accept input of new player's name -->
 			<button type="button" ng-click="game.activeBoard.newPlayers(game.currentPlayer1, game.currentPlayer2)">New Players</button>
+			</label>
+			
+			<br>
+			<br>
+			
+			<label>
+				<!-- player #1 score counter -->
+				<span class="games-won">{{game.activeBoard.tilesObject.playerName1}} Has Won {{game.activeBoard.tilesObject.playerScore1}} Games</span> ||
+				
+				<!-- player #2 scoure counter -->
+				<span class="games-won">{{game.activeBoard.tilesObject.playerName2}} Has Won {{game.activeBoard.tilesObject.playerScore2}} Games</span>
+			</label>
+			<br>
+			<br>
+				
+			<!-- button to exit game gracefully -->
+			<button type="button" ng-click="game.activeBoard.quitGame()">Exit Game</button>
 		<footer>
 
 
