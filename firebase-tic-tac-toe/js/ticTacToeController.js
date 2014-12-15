@@ -35,43 +35,64 @@ function TicTacToeControllerFunc(GameBoard, Player, $firebase) {
 				squares.$save();
 			}
 
-			if (squares.player1  === true){
-				// this is payer #2
+			if (squares.player1 === true && squares.player2 === false){
 				playerId = 1;
 				squares.player2 = true;
-				squares.playerName2="";
-				squares.playerScore1=0;
-				squares.playerScore2=0;
-				squares.$save();
-			}
-			else if (squares.player2 === true){
-				// this is player #1
-				playerId = 0;
-				squares.player1 = true;
-				squares.playerName1="";
-				squares.playerScore1=0;
-				squares.playerScore2=0;
-				squares.$save();
+				squares.playerName2 = "";
 			}
 
-			if (squares.player1 === false){
-				// this is player #1
+			if (squares.player2 === true && squares.player1 === false){
 				playerId = 0;
 				squares.player1 = true;
-				squares.playerName1="";
-				squares.playerScore1=0;
-				squares.playerScore2=0;
-				squares.$save();
-			} 
-			else if (squares.player2 === false){
-				// this is player #2
-				playerId = 1;
-				squares.player2 = true;
-				squares.playerName2="";
-				squares.playerScore1=0;
-				squares.playerScore2=0;
-				squares.$save();
+				squares.playerName1 = "";
 			}
+
+			if (squares.player1 === false && squares.player2 === false){
+				playerId = 0;
+				squares.player1 = true;
+				squares.playerName1 = "";
+			}
+
+			squares.playerScore1 = 0;
+			squares.playerScore2 = 0;
+
+			// if (squares.player1  === true){
+			// 	// this is payer #2
+			// 	playerId = 1;
+			// 	squares.player2 = true;
+			// 	squares.playerName2="";
+			// 	squares.playerScore1=0;
+			// 	squares.playerScore2=0;
+			// 	squares.$save();
+			// }
+			// else if (squares.player2 === true){
+			// 	// this is player #1
+			// 	playerId = 0;
+			// 	squares.player1 = true;
+			// 	squares.playerName1="";
+			// 	squares.playerScore1=0;
+			// 	squares.playerScore2=0;
+			// 	squares.$save();
+			// }
+
+			// if (squares.player1 === false){
+			// 	// this is player #1
+			// 	playerId = 0;
+			// 	squares.player1 = true;
+			// 	squares.playerName1="";
+			// 	squares.playerScore1=0;
+			// 	squares.playerScore2=0;
+			// 	squares.$save();
+			// } 
+			// else if (squares.player2 === false){
+			// 	// this is player #2
+			// 	playerId = 1;
+			// 	squares.player2 = true;
+			// 	squares.playerName2="";
+			// 	squares.playerScore1=0;
+			// 	squares.playerScore2=0;
+			// 	squares.$save();
+			// }
 			// reset gotFrist so that the message who goes first on screen does not show
 			squares.goesFirst=false;
 			// set all boxes to empty

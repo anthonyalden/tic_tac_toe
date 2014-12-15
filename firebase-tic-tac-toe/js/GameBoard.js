@@ -40,7 +40,7 @@ angular
 			this.getTileState = getTileState;
 			
 			// function resets game when over to set up for a new game
-			this.resetGame = resetGame;
+			this.newGame = newGame;
 			this.quitGame = quitGame;
 			
 			// function used to reset scores and data associated with new players
@@ -79,6 +79,9 @@ angular
 			// player1 is the player1 object instantiated in the Controller
 			// player2 is the player2 object instantiated in the Controller
 			function toggleTile(num, player1, player2) {
+
+				
+
 
 				// check to see if the game is over or a cats game and tell the user the game is over
 				// if he keeps clicking on the board
@@ -119,7 +122,6 @@ angular
 				// this conditional statement selects 'X'
 				if (self.tilesObject.playerNumber === 1) {
 					// update array with X and save to database 
-				alert("in main first X if "+ self.tilesObject.playerNumber);
 					self.tilesObject.squareArray[num]=TILE_STATES[2];
 					self.tilesObject.numSquaresUsed=self.tilesObject.numSquaresUsed+1;
 					// self.notYourTurn=false;
@@ -148,7 +150,6 @@ angular
 				// playserNumber is used to toggle between X and O 
 				// this conditional statement selects 'O'
 				if (self.tilesObject.playerNumber  === 0 ) {
-					alert("in main second  O if "+ self.tilesObject.playerNumber);
 					// update array with O and save to database
 					self.tilesObject.squareArray[num]=TILE_STATES[1];
 					self.tilesObject.numSquaresUsed=self.tilesObject.numSquaresUsed+1;
@@ -209,7 +210,7 @@ angular
 
 
 			// reset variables assocated with a game
-			function resetGame (){
+			function newGame (){
 
 				self.tilesObject.numSquaresUsed = 0;
 				self.tilesObject.gameWon = false;
@@ -241,25 +242,22 @@ angular
 				
 				// note that player1.name is used for both players.
 				if (playerId === 0 && self.tilesObject.playerNumber === 1){
-					alert("playerId"+playerId);
-					self.tilesObject.playerName1="X - "+player1.name;
-					
+					self.tilesObject.playerName1 = "X - " + player1.name;
+				
 				}
 				else if ( playerId === 0 && self.tilesObject.playerNumber === 0){
-					self.tilesObject.playerName1="X - "+player1.name;
-					
+					self.tilesObject.playerName1 = "X - " + player1.name;
+				
 				}
 				else if (playerId === 1 && self.tilesObject.playerNumber === 1){
-					alert("playerID in else"+playerId);
-					self.tilesObject.playerName2 = "O - "+player1.name;
-					
+					self.tilesObject.playerName2 = "O - " + player1.name;
+				
 				}
 				else{
-					self.tilesObject.playerName2 = "O - "+player1.name;
-					
+					self.tilesObject.playerName2 = "O - " + player1.name;	
 				}
-				self.tilesObject.$save;	
-				
+				self.tilesObject.$save();	
+
 			} // end newPlayers
 
 
