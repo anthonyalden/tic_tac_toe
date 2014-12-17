@@ -16,6 +16,25 @@ function TicTacToeControllerFunc(GameBoard, Player, $firebase) {
 	var ref = new Firebase("https://presidents.firebaseio.com/squares");
 	var tilesArray=[];
 	var squares = $firebase(ref).$asObject();
+
+	// create database objects if they don't exist
+	if (!squares.squareArray){
+		squares.squareArray = ["","","","","","","","",""];
+		squares.gameWinner = "";
+		squares.gameWon =  false;
+		squares.goesFirst = false;
+		squares.goesFirstName = "";
+		squares.notYourTurn = false;
+		squares.numPlayers = 0;
+		squares.numSquaresUsed = 0;
+		squares.player1 = false;
+		squares.player2 = false;
+		squares.playerName1 = "";
+		squares.playerName2 = "";
+		squares.playerScore1 = 0;
+		squares.playerScore2 = 0;
+	}
+
 	var playerId;
 
 
