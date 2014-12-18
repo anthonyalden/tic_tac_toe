@@ -42,14 +42,14 @@
 			<section id="active-board">
 			
 			<!-- display gameboard and handle clicking on squares, show X's and O's as clicked on -->
-			<div class="game-board">
+			
 				<div class="board-tile"
 				     ng-repeat="tile in game.activeBoard.tilesObject.squareArray track by $index"
 				     ng-click="game.activeBoard.toggleTile($index, game.currentPlayer1, game.currentPlayer2)"
 				     ng-class="game.activeBoard.getTileState($index)"/>
 				      {{tile}}
 				</div>
-			</div>
+			
 			
 			<!-- start a new game button -->
 			<button type="button" ng-click="game.activeBoard.newGame()">New Game</button>

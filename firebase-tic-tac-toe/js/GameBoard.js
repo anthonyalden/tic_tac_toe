@@ -12,6 +12,11 @@ angular
 
 		var GameBoard = function( numTiles , passedInObject, playerId) {
 			
+			//numTiles is the number of squares in tic tac toe it is 9
+			// passedInObject is the object holding the Array that keeps trac of X and O squares played
+			// playerID is either 1 or 0 and identifies if the player is player1 or player2
+
+
 			// used to determine cats game
 			var numSquaresUsed=0;
 
@@ -96,12 +101,15 @@ angular
 					alert("You have exited this game.  Please refresh your browser to play again.");
 					return;
 				}
-				// check to see if box is already chosen and tell user if so
+				// check to see if it is not the X's turn and tell him if it isn't
+				// playerId=0 is X playerId=1 is O.  playerNumber=0 is O, playerNumber=1 is X
 				if ( (self.tilesObject.playerNumber%2 === 0) && ( playerId%2  === 0) ){
 					self.notYourTurn= true;
 					return;
 				}
 
+				// check to see if it is not O's turn and tell him if it isn't
+				// playerId=0 is X playerId=1 is O.  playerNumber=0 is O, playerNumber=1 is X
 				if ( (self.tilesObject.playerNumber !== 0) && ( playerId%2 !==0)){
 					self.notYourTurn =true;
 					return;
@@ -241,27 +249,23 @@ angular
 				self.tilesObject.playerScore2 = 0;
 				
 				// note that player1.name is used for both players.
-				if (playerId === 0 && self.tilesObject.playerNumber === 1){
+				// these if statements determine if a player is X or O and will be displayed on the screen
+				// with the appropriate desigation  playerId 0 is X, PlayerId 1 is O.
+				if (playerId === 0){
 					self.tilesObject.playerName1 = "X - " + player1.name;
-				
-				}
-				else if ( playerId === 0 && self.tilesObject.playerNumber === 0){
-					self.tilesObject.playerName1 = "X - " + player1.name;
-				
-				}
-				else if (playerId === 1 && self.tilesObject.playerNumber === 1){
-					self.tilesObject.playerName2 = "O - " + player1.name;
 				
 				}
 				else{
-					self.tilesObject.playerName2 = "O - " + player1.name;	
+					self.tilesObject.playerName2 = "O - " + player1.name;
+				
 				}
+				
 				self.tilesObject.$save();	
 
 			} // end newPlayers
 
 
-			// return X or O or unselected for ng-class to display in html 
+			// return "X" or "O" or "unselected-tile" for ng-class to display in html 
 			function getTileState( num ) {
 				return self.tilesObject.squareArray[num];
 			}
